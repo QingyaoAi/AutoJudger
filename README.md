@@ -1,8 +1,21 @@
+<div align="center">
+
 # AutoJudger
 
-A unified **LLM-as-judge** toolkit. Give it (1) a judgment prompt describing your
-criteria and (2) one or more LLM API endpoints — it evaluates and ranks the
-candidates, with built-in safeguards against unreliable judges and position bias.
+**A unified LLM-as-judge toolkit — evaluate and rank model outputs with built-in safeguards against unreliable judges and position bias.**
+
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/status-research-orange.svg)](#)
+
+</div>
+
+---
+
+Give AutoJudger (1) a judgment prompt describing your criteria and (2) one or
+more LLM API endpoints — it evaluates and ranks the candidates, automatically
+disqualifying judges that can't be trusted and calibrating away the order in
+which candidates are shown.
 
 It merges three research frameworks into one pipeline:
 
@@ -11,6 +24,34 @@ It merges three research frameworks into one pipeline:
 | [PRE](https://github.com/chuzhumin98/PRE) | Peer review + weighted "chair" decision | [judge.py](autojudger/judge.py) |
 | [Auto-PRE](https://github.com/cjj826/Auto-PRE) | Label-free judge **qualification exam** | [exam.py](autojudger/exam.py) |
 | [CalibraEval](https://github.com/CSHaitao/CalibraEval) | Logprob **bias calibration** | [calibrate.py](autojudger/calibrate.py) |
+
+## Highlights
+
+- **Drop-in LLM judging** — point it at any OpenAI-compatible endpoint (OpenAI, DeepSeek, Together, vLLM / local servers, …) and rank responses with a single config file.
+- **Label-free quality control** — a qualification exam disqualifies self-contradicting, off-topic-blind, or over-confident judges *without any gold labels*.
+- **Position-bias calibration** — a logprob-based debiaser collapses the "A vs. B" ordering effect that plagues pairwise LLM judging.
+- **Reliability-weighted decisions** — surviving judges vote as a weighted "chair," so trustworthy judges count for more.
+- **Crash-safe & resumable** — every step checkpoints to JSONL; an interrupted run resumes without re-querying any API.
+- **Pairwise *and* pointwise** modes, with pre-written or model-generated responses.
+- **Lightweight** — core install is pure `openai` + `numpy` + `PyYAML` + `tqdm`; no heavyweight ML deps.
+
+## Table of contents
+
+- [Pipeline](#pipeline)
+- [Install](#install)
+- [Quickstart](#quickstart)
+- [Task data](#task-data)
+- [Roles & endpoints](#roles--endpoints)
+- [Pointwise mode](#pointwise-mode)
+- [Config reference](#config-reference)
+- [Output / report schema](#output--report-schema)
+- [How the safeguards work](#how-the-safeguards-work)
+- [Checkpoints & resume](#checkpoints--resume)
+- [Module map](#module-map)
+- [Tests](#tests)
+- [Acknowledgements](#acknowledgements)
+- [Citation](#citation)
+- [License](#license)
 
 ## Pipeline
 
@@ -246,3 +287,31 @@ python tests/test_calibrate.py      # NOA calibrator + end-to-end
 All tests run offline with mocked LLMs — no API key required. To smoke-test
 against a real endpoint, fill in credentials and run
 [tests/live_api_check.py](tests/live_api_check.py).
+
+## Acknowledgements
+
+AutoJudger stands on the shoulders of three open research frameworks, whose
+ideas it unifies into a single pipeline:
+
+- [PRE: Peer Review-based Evaluation](https://github.com/chuzhumin98/PRE)
+- [Auto-PRE: Automatic Peer Review Evaluation](https://github.com/cjj826/Auto-PRE)
+- [CalibraEval](https://github.com/CSHaitao/CalibraEval)
+
+## Citation
+
+If you use AutoJudger in your research, please cite this repository:
+
+```bibtex
+@software{ai_autojudger,
+  author  = {Ai, Qingyao},
+  title   = {AutoJudger: A Unified LLM-as-Judge Toolkit},
+  year    = {2026},
+  url     = {https://github.com/QingyaoAi/AutoJudger}
+}
+```
+
+Please also consider citing the upstream PRE, Auto-PRE, and CalibraEval works.
+
+## License
+
+Released under the [MIT License](LICENSE).
