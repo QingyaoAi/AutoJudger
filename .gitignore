@@ -1,0 +1,20 @@
+# --- Secrets / API credentials (never commit) ---
+API_config.json
+*api*config*.json
+.env
+secrets.*
+*.key
+
+# --- Run artifacts / checkpoints (may contain prompt+response data) ---
+results/
+results_*/
+live_results/
+*.report.json
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/

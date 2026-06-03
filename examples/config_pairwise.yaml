@@ -1,0 +1,27 @@
+# Example AutoJudger config — pairwise judging of pre-written A/B responses.
+# Run:  python main.py --config examples/config_pairwise.yaml
+
+judgment_prompt: |
+  You are comparing two AI responses to a task.
+  Task: {{question}}
+  Response A: {{response_A}}
+  Response B: {{response_B}}
+  Which response is better? Output only the single letter 'A' or 'B'.
+
+apis:
+  - base_url: "https://api.openai.com/v1"
+    api_key: "sk-REPLACE_ME"
+    model: "gpt-4o-mini"
+    role: "evaluator"
+  # Add more judges for peer review + qualification exam:
+  # - base_url: "https://api.deepseek.com/v1"
+  #   api_key: "sk-..."
+  #   model: "deepseek-chat"
+  #   role: "evaluator"
+
+tasks: "examples/tasks_pairwise.jsonl"
+mode: "pairwise"
+output_dir: "results"
+
+exam:
+  enabled: false        # single judge -> nothing to filter

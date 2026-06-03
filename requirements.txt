@@ -1,0 +1,9 @@
+# Core
+openai>=1.0
+numpy>=1.24
+PyYAML>=6.0
+tqdm>=4.65
+
+# Optional (calibration / debiasing) — install with: pip install -e .[calibrate]
+# scikit-learn>=1.3
+# scipy>=1.10

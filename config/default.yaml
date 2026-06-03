@@ -1,0 +1,32 @@
+# AutoJudger default configuration.
+# User configs are merged on top of these defaults; only `judgment_prompt`,
+# `apis`, and `tasks` are strictly required from the user.
+
+mode: pairwise            # pairwise | pointwise
+output_dir: results
+
+# --- Response parsing ---
+# pairwise -> nominal A/B/tie tokens; pointwise -> integer score.
+parser_type: str          # str | int | float
+
+# --- Qualification exam (Phase 3) ---
+exam:
+  enabled: true           # auto-skips when fewer than 2 evaluator APIs
+  consistency: true
+  self_confidence: true
+  pertinence: true
+  threshold: mean         # 'mean' or an explicit float
+
+# --- Chair decision / aggregation ---
+aggregation:
+  strategy: full          # full | elo
+  weighted_method: uniform  # uniform | log | exp | poly
+  alpha: 1.0
+
+# --- Calibration / debiasing (Phase 4) ---
+calibrate:
+  enabled: false          # requires logprob-capable APIs
+  lam: 0.05
+  batch_size: 64
+
+debug: false
